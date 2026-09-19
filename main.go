@@ -1,5 +1,17 @@
 package main
 
+import (
+	"github.com/BooperDCSS/pokedexcli/internal/config"
+)
+
 func main() {
-	replInput()
+	locationNext := "https://pokeapi.co/api/v2/location-area/"
+	var locationPrevious *string
+
+	var conf = &config.Config{
+		Commands: getCommands(),
+		Next:     &locationNext,
+		Previous: locationPrevious,
+	}
+	replInput(conf)
 }
