@@ -1,0 +1,38 @@
+package main
+
+import (
+	"fmt"
+)
+
+func commandMapForward(conf *config) error {
+
+	locationResp, err := conf.pokeapiClient.ListLocationAreas(conf.nextLocationsURL)
+	if err != nil {
+		return err
+	}
+
+	conf.nextLocationsURL = locationResp.Next         // this makes it so conf.next and loc.Next point to the same mem location
+	conf.previousLocationsURL = locationResp.Previous // safe because it doesn't mutate state, just reassigns value
+
+	for _, loc := range locationResp.Results {
+		fmt.Println(loc.Name)
+	}
+
+	return nil
+}
+
+func commandMapBack(conf *config) error {
+	locationResp, err := conf.pokeapiClient.ListLocationAreas(conf.previousLocationsURL)
+	if err != nil {
+		return err
+	}
+
+	conf.nextLocationsURL = locationResp.Next
+	conf.previousLocationsURL = locationResp.Previous
+
+	for _, loc := range locationResp.Results {
+		fmt.Println(loc.Name)
+	}
+
+	return nil
+}

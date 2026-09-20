@@ -1,17 +1,21 @@
 package main
 
 import (
-	"github.com/BooperDCSS/pokedexcli/internal/config"
+	"time"
+
+	"github.com/BooperDCSS/pokedexcli/internal/pokeapi"
 )
 
 func main() {
-	locationNext := "https://pokeapi.co/api/v2/location-area/"
-	var locationPrevious *string
 
-	var conf = &config.Config{
-		Commands: getCommands(),
-		Next:     &locationNext,
-		Previous: locationPrevious,
+	pokeClient := pokeapi.NewClient(5 * time.Second) // this client times out after 5 seconds
+
+	// the uninitialized config fields for the next and prev location URLS is intentionally blank
+	// Go sets uninitialized struct fields to their zero values for you
+	// that's nil for pointers, which is what we want
+	conf := &config{
+		Commands:      getCommands(),
+		pokeapiClient: pokeClient,
 	}
 	replInput(conf)
 }

@@ -6,10 +6,28 @@ import (
 	"os"
 	"strings"
 
-	"github.com/BooperDCSS/pokedexcli/internal/config"
+	"github.com/BooperDCSS/pokedexcli/internal/pokeapi"
 )
 
-func replInput(conf *config.Config) {
+type cliCommand struct {
+	Name        string
+	Description string
+	Callback    func(*config) error
+}
+
+// we pass the API client to the config because we want to access interface data provided by the Poke site
+// via the config itself; since we use the client to GET our location area values, and we get URLs
+// via the pokeapi package ListLocations function, this config makes the inner workings of the
+// client available in the main package
+
+type config struct {
+	Commands             map[string]cliCommand
+	pokeapiClient        pokeapi.Client
+	nextLocationsURL     *string
+	previousLocationsURL *string
+}
+
+func replInput(conf *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -39,6 +57,31 @@ func replInput(conf *config.Config) {
 	}
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("Scanner error encountered: %v", err)
+	}
+}
+
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand{
+		"help": {
+			Name:        "help",
+			Description: "Displays a help message",
+			Callback:    commandHelp,
+		},
+		"exit": {
+			Name:        "exit",
+			Description: "Exit the Pokedex",
+			Callback:    commandExit,
+		},
+		"map": {
+			Name:        "map",
+			Description: "Print the next 20 Pokedex location-areas",
+			Callback:    commandMapForward,
+		},
+		"mapb": {
+			Name:        "mapb",
+			Description: "mapb(ack) - Print the previous 20 Pokedex location-areas",
+			Callback:    commandMapBack,
+		},
 	}
 }
 

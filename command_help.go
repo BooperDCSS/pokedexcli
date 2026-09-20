@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/BooperDCSS/pokedexcli/internal/config"
 )
 
-func commandHelp(conf *config.Config) error {
+func commandHelp(conf *config) error {
 	fmt.Println("Welcome to the Pokedex!\nUsage:")
 	fmt.Println()
 	for _, command := range conf.Commands {

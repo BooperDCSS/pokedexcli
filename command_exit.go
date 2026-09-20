@@ -3,11 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/BooperDCSS/pokedexcli/internal/config"
 )
 
-func commandExit(conf *config.Config) error {
+func commandExit(conf *config) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
