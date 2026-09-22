@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -22,6 +23,9 @@ func commandMapForward(conf *config) error {
 }
 
 func commandMapBack(conf *config) error {
+	if conf.previousLocationsURL == nil {
+		return errors.New("you're on the first page") // bubbles up through the replInput function
+	}
 	locationResp, err := conf.pokeapiClient.ListLocationAreas(conf.previousLocationsURL)
 	if err != nil {
 		return err
