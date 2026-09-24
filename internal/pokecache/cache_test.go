@@ -44,6 +44,7 @@ func TestReapLoop(t *testing.T) {
 
 	cache := NewCache(baseTime)
 	cache.Add("https://squarepusher.net", []byte("squarepusher is still good"))
+
 	_, ok := cache.Get("https://squarepusher.net")
 	if !ok {
 		t.Errorf("expected to find key")
