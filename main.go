@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/BooperDCSS/pokedexcli/internal/pokeapi"
-	"github.com/BooperDCSS/pokedexcli/internal/pokecache"
 )
 
 func main() {
@@ -16,7 +15,6 @@ func main() {
 	// that's nil for pointers, which is what we want
 	conf := &config{
 		Commands:      getCommands(),
-		pokeapiCache:  pokecache.NewCache(20 * time.Second), // only exists in the config; memory addressable!
 		pokeapiClient: pokeClient,
 	}
 	replInput(conf)

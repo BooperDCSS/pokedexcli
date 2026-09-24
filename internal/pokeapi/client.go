@@ -3,6 +3,8 @@ package pokeapi
 import (
 	"net/http"
 	"time"
+
+	"github.com/BooperDCSS/pokedexcli/internal/pokecache"
 )
 
 // creating a client because it offers more flexibility
@@ -11,6 +13,7 @@ import (
 
 type Client struct {
 	httpClient http.Client
+	clientCache *pokecache.Cache
 }
 
 // a little strange, but we return a Client struct that contains an http.Client{}
@@ -21,5 +24,6 @@ func NewClient(timeout time.Duration) Client {
 		httpClient: http.Client{
 			Timeout: timeout,
 		},
+		clientCache: pokecache.NewCache(20 * time.Second),
 	}
 }

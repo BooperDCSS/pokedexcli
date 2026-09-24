@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/BooperDCSS/pokedexcli/internal/pokeapi"
-	"github.com/BooperDCSS/pokedexcli/internal/pokecache"
 )
 
 type cliCommand struct {
@@ -24,7 +23,6 @@ type cliCommand struct {
 type config struct {
 	Commands             map[string]cliCommand
 	pokeapiClient        pokeapi.Client
-	pokeapiCache         *pokecache.Cache
 	nextLocationsURL     *string
 	previousLocationsURL *string
 }
