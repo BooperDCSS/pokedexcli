@@ -21,12 +21,11 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 
 	var loc RespShallowLocAreas
 
-	cachedData, exists := c.clientCache.Get(url)
-	if exists {
+	if cachedData, exists := c.clientCache.Get(url); exists {
 		if err := json.Unmarshal(cachedData, &loc); err != nil {
 			return RespShallowLocAreas{}, err
 		}
-		fmt.Println("Data retrieved from the cache")
+		fmt.Println("***Data retrieved from the cache***")
 		return loc, nil
 	}
 
@@ -47,11 +46,11 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 		return RespShallowLocAreas{}, err
 	}
 
-	c.clientCache.Add(url, data) // cache the data here using the url that obtained the data
-
 	if err := json.Unmarshal(data, &loc); err != nil {
 		return RespShallowLocAreas{}, err
 	}
+
+	c.clientCache.Add(url, data) // cache the data here using the url that obtained the data
 
 	return loc, nil
 

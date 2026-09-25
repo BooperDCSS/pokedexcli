@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	pokeClient := pokeapi.NewClient(5 * time.Second) // this client times out after 5 seconds
+	pokeClient := pokeapi.NewClient(5*time.Second, 5*time.Minute)
 
 	// the uninitialized config fields for the next and prev location URLS is intentionally blank
 	// Go sets uninitialized struct fields to their zero values for you

@@ -5,15 +5,16 @@ import (
 	"fmt"
 )
 
-func commandMapForward(conf *config) error {
+func commandMapForward(conf *config, optional ...string) error {
 
 	locationResp, err := conf.pokeapiClient.ListLocationAreas(conf.nextLocationsURL)
 	if err != nil {
 		return err
 	}
 
-	conf.nextLocationsURL = locationResp.Next         // this makes it so conf.next and loc.Next point to the same mem location
-	conf.previousLocationsURL = locationResp.Previous // safe because it doesn't mutate state, just reassigns value
+	conf.currentLocations = locationResp
+	conf.nextLocationsURL = locationResp.Next // this makes it so conf.next and loc.Next point to the same mem location
+	conf.previousLocationsURL = locationResp.Previous
 
 	for _, loc := range locationResp.Results {
 		fmt.Println(loc.Name)
@@ -22,7 +23,7 @@ func commandMapForward(conf *config) error {
 	return nil
 }
 
-func commandMapBack(conf *config) error {
+func commandMapBack(conf *config, optional ...string) error {
 	if conf.previousLocationsURL == nil {
 		return errors.New("you're on the first page") // bubbles up through the replInput function
 	}
@@ -31,6 +32,7 @@ func commandMapBack(conf *config) error {
 		return err
 	}
 
+	conf.currentLocations = locationResp
 	conf.nextLocationsURL = locationResp.Next
 	conf.previousLocationsURL = locationResp.Previous
 

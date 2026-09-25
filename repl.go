@@ -12,7 +12,7 @@ import (
 type cliCommand struct {
 	Name        string
 	Description string
-	Callback    func(*config) error
+	Callback    func(conf *config, optional ...string) error
 }
 
 // we pass the API client to the config because we want to access interface data provided by the Poke site
@@ -23,6 +23,7 @@ type cliCommand struct {
 type config struct {
 	Commands             map[string]cliCommand
 	pokeapiClient        pokeapi.Client
+	currentLocations     pokeapi.RespShallowLocAreas
 	nextLocationsURL     *string
 	previousLocationsURL *string
 }
@@ -42,6 +43,11 @@ func replInput(conf *config) {
 		}
 
 		commandRequest := cleanedInput[0]
+		optionalParam := []string{""}
+
+		if len(cleanedInput) > 1 {
+			optionalParam = cleanedInput[1:] // used to explore areas; passes a []string via the request
+		}
 
 		request, exists := conf.Commands[commandRequest]
 		if !exists {
@@ -49,7 +55,7 @@ func replInput(conf *config) {
 			continue
 		}
 
-		err := request.Callback(conf)
+		err := request.Callback(conf, optionalParam...)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -81,6 +87,11 @@ func getCommands() map[string]cliCommand {
 			Name:        "mapb",
 			Description: "mapb(ack) - Print the previous 20 Pokedex location-areas",
 			Callback:    commandMapBack,
+		},
+		"explore": {
+			Name:        "explore",
+			Description: "Explore <area name> - prints all of the Pokemon found in that area",
+			Callback:    commandExplore,
 		},
 	}
 }
