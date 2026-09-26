@@ -12,8 +12,8 @@ import (
 // we are wrapping an http.Client in a Client struct to further configure it
 
 type Client struct {
-	httpClient  http.Client
-	clientCache *pokecache.Cache
+	httpClient          http.Client
+	clientCache         *pokecache.Cache
 }
 
 // a little strange, but we return a Client struct that contains an http.Client{}

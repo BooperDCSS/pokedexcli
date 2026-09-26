@@ -15,7 +15,7 @@ type RespShallowLocAreas struct {
 
 // deep responses get a LOT of data from the server about each location
 
-type DeepLocationData struct {
+type RespDeepLocationData struct {
 	ID                   int    `json:"id"`
 	Name                 string `json:"name"`
 	GameIndex            int    `json:"game_index"`

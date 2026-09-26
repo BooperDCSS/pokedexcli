@@ -19,14 +19,14 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 		url = *pageURL
 	}
 
-	var loc RespShallowLocAreas
+	var ListOfLocations RespShallowLocAreas
 
 	if cachedData, exists := c.clientCache.Get(url); exists {
-		if err := json.Unmarshal(cachedData, &loc); err != nil {
+		if err := json.Unmarshal(cachedData, &ListOfLocations); err != nil {
 			return RespShallowLocAreas{}, err
 		}
 		fmt.Println("***Data retrieved from the cache***")
-		return loc, nil
+		return ListOfLocations, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -39,6 +39,10 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 		return RespShallowLocAreas{}, err
 	}
 
+	if resp.StatusCode > 299 {
+		return RespShallowLocAreas{}, fmt.Errorf("Bad status code: %d - map process terminated", resp.StatusCode)
+	}
+
 	defer resp.Body.Close()
 
 	data, err := io.ReadAll(resp.Body)
@@ -46,12 +50,11 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 		return RespShallowLocAreas{}, err
 	}
 
-	if err := json.Unmarshal(data, &loc); err != nil {
+	if err := json.Unmarshal(data, &ListOfLocations); err != nil {
 		return RespShallowLocAreas{}, err
 	}
 
 	c.clientCache.Add(url, data) // cache the data here using the url that obtained the data
 
-	return loc, nil
-
+	return ListOfLocations, nil
 }

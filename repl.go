@@ -21,11 +21,10 @@ type cliCommand struct {
 // client available in the main package
 
 type config struct {
-	Commands             map[string]cliCommand
-	pokeapiClient        pokeapi.Client
-	currentLocations     pokeapi.RespShallowLocAreas
-	nextLocationsURL     *string
-	previousLocationsURL *string
+	Commands         map[string]cliCommand
+	pokeapiClient    pokeapi.Client
+	currentLocations pokeapi.RespShallowLocAreas
+	locationURLDict  map[string]string
 }
 
 func replInput(conf *config) {
@@ -43,7 +42,7 @@ func replInput(conf *config) {
 		}
 
 		commandRequest := cleanedInput[0]
-		optionalParam := []string{""}
+		optionalParam := []string{}
 
 		if len(cleanedInput) > 1 {
 			optionalParam = cleanedInput[1:] // used to explore areas; passes a []string via the request
