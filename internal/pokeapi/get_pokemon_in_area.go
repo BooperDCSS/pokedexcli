@@ -7,8 +7,10 @@ import (
 	"net/http"
 )
 
-func (c *Client) GetDeepLocationData(pageURL string) (RespDeepLocationData, error) {
-	url := baseURL + "/location-area/" + pageURL
+// used with the explore function
+
+func (c *Client) GetDeepLocationData(locationInput string) (RespDeepLocationData, error) {
+	url := baseURL + locationInput
 
 	var deepInfo RespDeepLocationData
 
@@ -32,7 +34,7 @@ func (c *Client) GetDeepLocationData(pageURL string) (RespDeepLocationData, erro
 
 	if resp.StatusCode > 299 {
 		return RespDeepLocationData{}, fmt.Errorf(
-			"Bad Status from Client: %d. That location does not exist.", 
+			"Bad Status from Client: %d. That location does not exist.",
 			resp.StatusCode)
 	}
 

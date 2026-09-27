@@ -24,7 +24,7 @@ type config struct {
 	Commands         map[string]cliCommand
 	pokeapiClient    pokeapi.Client
 	currentLocations pokeapi.RespShallowLocAreas
-	locationURLDict  map[string]string
+	pokedex          map[string]pokeapi.RespPokeStats
 }
 
 func replInput(conf *config) {
@@ -45,7 +45,8 @@ func replInput(conf *config) {
 		optionalParam := []string{}
 
 		if len(cleanedInput) > 1 {
-			optionalParam = cleanedInput[1:] // used to explore areas; passes a []string via the request
+			optionalParam = cleanedInput[1:]
+			// used to explore areas and catch pokemon; passes a []string via the Callback
 		}
 
 		request, exists := conf.Commands[commandRequest]
@@ -91,6 +92,11 @@ func getCommands() map[string]cliCommand {
 			Name:        "explore",
 			Description: "Explore <area name> - prints all of the Pokemon found in that area",
 			Callback:    commandExplore,
+		},
+		"catch": {
+			Name:        "catch",
+			Description: "Catch a Pokemon... if you can!",
+			Callback:    commandCatch,
 		},
 	}
 }

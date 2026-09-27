@@ -1,7 +1,6 @@
 package pokeapi
 
 // response with "shallow" information about the location areas
-// shallow because the Results struct only shows the name and URL, where we find more info
 
 type RespShallowLocAreas struct {
 	Count    int     `json:"count"`
@@ -13,7 +12,7 @@ type RespShallowLocAreas struct {
 	} `json:"results"`
 }
 
-// deep responses get a LOT of data from the server about each location
+// "deep" responses for more information from the API
 
 type RespDeepLocationData struct {
 	ID                   int    `json:"id"`

@@ -7,14 +7,10 @@ import (
 	"net/http"
 )
 
-// this looks like a lot, but it's just a GET and unmarshal function that returns the JSON data
-// as a struct; it's used in the map functions so that the process of printing the maps
-// and fetching the data is roughly separated, though the map functions will use the
-// JSON struct to manipulate elements of the config struct, thereby changing the outcome of
-// this function
+// used for the map and mapb funtions
 
 func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error) {
-	url := baseURL + "/location-area"
+	url := baseURL
 	if pageURL != nil {
 		url = *pageURL
 	}
@@ -40,7 +36,9 @@ func (c *Client) ListLocationAreas(pageURL *string) (RespShallowLocAreas, error)
 	}
 
 	if resp.StatusCode > 299 {
-		return RespShallowLocAreas{}, fmt.Errorf("Bad status code: %d - map process terminated", resp.StatusCode)
+		return RespShallowLocAreas{}, fmt.Errorf(
+			"Bad status code: %d - map process terminated",
+			resp.StatusCode)
 	}
 
 	defer resp.Body.Close()
