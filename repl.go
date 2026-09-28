@@ -80,23 +80,33 @@ func getCommands() map[string]cliCommand {
 		},
 		"map": {
 			Name:        "map",
-			Description: "Print the next 20 Pokedex location-areas",
+			Description: "Print a list of the next 20 Pokedex location-areas",
 			Callback:    commandMapForward,
 		},
 		"mapb": {
 			Name:        "mapb",
-			Description: "mapb(ack) - Print the previous 20 Pokedex location-areas",
+			Description: "mapb(ack) - Print a list of the previous 20 Pokedex location-areas.",
 			Callback:    commandMapBack,
 		},
 		"explore": {
 			Name:        "explore",
-			Description: "Explore <area name> - prints all of the Pokemon found in that area",
+			Description: "Explore <area name> - prints all of the Pokemon found in that area.",
 			Callback:    commandExplore,
 		},
 		"catch": {
 			Name:        "catch",
-			Description: "Catch a Pokemon... if you can!",
+			Description: "Catch a <pokemon_name>... if you can!",
 			Callback:    commandCatch,
+		},
+		"inspect": {
+			Name: "inspect",
+			Description: "See stats for the Pokemon you have caught this session.",
+			Callback: commandInspect,
+		},
+		"pokedex": {
+			Name: "pokedex",
+			Description: "See a list of all the Pokemon you have caught this session.",
+			Callback: commandPokedex,
 		},
 	}
 }
